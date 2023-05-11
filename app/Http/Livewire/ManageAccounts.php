@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,19 +24,26 @@ class ManageAccounts extends Component
     {
         $individuals = new Collection(
             $this->searchQuery ?
-                Individual::whereBlind('name', 'name_index', $this->searchQuery)->get() :
+                Individual::whereBlind('name', 'name_index', $this->searchQuery)
+                    ->orWhereHas('user', function (Builder $query) {
+                        $query->whereBlind('email', 'email_index', $this->searchQuery);
+                    })
+                    ->get() :
                 Individual::all()
         );
+
         $organizations = new Collection(
             $this->searchQuery ?
                 Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhere('contact_person_email', 'like', '%'.$this->searchQuery.'%')->get() :
                 Organization::all()
         );
         $regulatedOrganizations = new Collection(
             $this->searchQuery ?
                 RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhere('contact_person_email', 'like', '%'.$this->searchQuery.'%')->get() :
                 RegulatedOrganization::all()
         );
 

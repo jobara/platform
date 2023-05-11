@@ -24,7 +24,7 @@
     </div>
 
     <form class="stack" wire:submit.prevent="search">
-        <x-hearth-label for="searchQuery" :value="__('Search by account name')" />
+        <x-hearth-label for="searchQuery" :value="__('Search by name, organization name, or email')" />
         <div class="repel">
             <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
