@@ -6,51 +6,47 @@
             <strong>{{ $individual->name }}</strong>
         @endif
         <br />
+        {{ __('Individual') }}
+        @if (!$user->checkStatus('suspended'))
+            <form wire:submit.prevent="suspend">
+                <button class="secondary destructive">
+                    @svg('heroicon-o-ban')
+                    {{ __('Suspend') }}
+                </button>
+            </form>
+        @else
+            <form wire:submit.prevent="unsuspend">
+                <button class="secondary">{{ __('Unsuspend') }}</button>
+            </form>
+        @endif
+    </td>
+    <td>
         <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
     </td>
     <td>
-        {{ __('Individual') }}
-    </td>
-    <td>
-        @if ($individual->checkStatus('draft') && !$individual->isPublishable())
-            {{ __('Draft') }}
-        @elseif($individual->checkStatus('draft') && $individual->isPublishable())
-            {{ __('Ready to publish') }}
-        @elseif($individual->checkStatus('published'))
-            {{ __('Published') }}
-        @endif
-    </td>
-    <td class="">
         @if ($user->checkStatus('suspended'))
-            <span class="text-error flex items-center gap-2">
-                @svg('heroicon-o-ban') <span class="font-semibold">{{ __('Suspended') }}</span>
-            </span>
+            <strong>{{ __('Suspended') }}</strong>
+        @elseif($user->checkStatus('approved'))
+            <strong>{{ __('Approved') }}</strong>
         @else
-            @if ($user->checkStatus('pending'))
-                {{ __('Pending approval') }}
-            @elseif($user->checkStatus('approved'))
-                {{ __('Approved') }}
-            @endif
+            {{ __('Pending approval') }}
         @endif
     </td>
     <td>
-        @if ($user->checkStatus('pending'))
-            <form wire:submit.prevent="approve">
-                <button class="secondary">{{ __('Approve') }}</button>
-            </form>
-        @else
-            @if (!$user->checkStatus('suspended'))
-                <form wire:submit.prevent="suspend">
-                    <button class="secondary destructive">
-                        @svg('heroicon-o-ban')
-                        {{ __('Suspend') }}
-                    </button>
-                </form>
-            @else
-                <form wire:submit.prevent="unsuspend">
-                    <button class="secondary">{{ __('Unsuspend') }}</button>
-                </form>
-            @endif
-        @endif
+        <form wire:submit.prevent="approve">
+            <fieldset class="field @error('roles') field--error @enderror">
+                <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', $individual->roles)" />
+                <x-hearth-error for="roles" />
+            </fieldset>
+
+            <button class="secondary">
+                @if ($user->checkStatus('approved'))
+                    {{ __('Update') }}
+                @else
+                    {{ __('Approve') }}
+                @endif
+            </button>
+            <button class="borderless" type="button" wire:click="$refresh">{{ __('Reset') }}
+        </form>
     </td>
 </tr>

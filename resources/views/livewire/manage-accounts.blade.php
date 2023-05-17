@@ -43,11 +43,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>{{ __('Account name') }}</th>
-                    <th>{{ __('Account type') }}</th>
-                    <th>{{ __('Page status') }}</th>
-                    <th>{{ __('Approval status') }}</th>
-                    <th></th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Email') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th>{{ __('Role') }}</th>
                 </tr>
             </thead>
             @foreach ($accounts as $account)
