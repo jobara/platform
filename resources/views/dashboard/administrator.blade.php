@@ -14,7 +14,7 @@
                 href="{{ route('filament.admin.resources.impacts.index') }}">{{ __('Areas of accessibility planning') }}</a>
         </li>
         <li>
-            <a href="{{ route('filament.admin.resources.content-types.index') }}">{{ __('Content types') }}</a>
+            <a href="{{ route('filament.admin.resources.resource-types.index') }}">{{ __('Resource types') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>

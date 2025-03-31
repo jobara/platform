@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ContentType;
+use App\Models\ResourceType;
 use Illuminate\Database\Seeder;
 
-class ContentTypeSeeder extends Seeder
+class ResourceTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,17 +14,17 @@ class ContentTypeSeeder extends Seeder
      */
     public function run()
     {
-        $content_types = [
+        $resource_types = [
             __('Guidelines and best practices'),
             __('Practical guides and how tos'),
             __('Templates and forms'),
             __('Case studies'),
         ];
 
-        foreach ($content_types as $content_type) {
-            ContentType::firstOrCreate([
-                'name->en' => $content_type,
-                'name->fr' => trans($content_type, [], 'fr'),
+        foreach ($resource_types as $resource_type) {
+            ResourceType::firstOrCreate([
+                'name->en' => $resource_type,
+                'name->fr' => trans($resource_type, [], 'fr'),
             ]);
         }
     }
